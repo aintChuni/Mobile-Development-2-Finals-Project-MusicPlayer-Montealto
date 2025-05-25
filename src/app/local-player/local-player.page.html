@@ -1,0 +1,81 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Local Music Player</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()" color="light">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="file-picker-wrapper ion-margin-bottom">
+    <label class="custom-file-input">
+      <ion-icon name="musical-notes-outline" class="icon"></ion-icon>
+      <span>Select Music Files</span>
+      <input
+        type="file"
+        accept="audio/*"
+        multiple
+        (change)="onFilesSelected($event)"
+      />
+    </label>
+  </div>
+
+  <ion-spinner *ngIf="isLoading" name="dots" class="ion-margin-top"></ion-spinner>
+
+  <p *ngIf="!currentSong && !isLoading && playlist.length === 0" class="ion-text-center ion-margin-top text-muted">
+    No audio file selected or loaded from storage.
+  </p>
+
+  <!-- Now Playing Card -->
+  <ion-card *ngIf="currentSong" class="now-playing-card">
+    <img [src]="currentSong.cover || 'assets/default-cover.jpg'" alt="Cover Art" />
+    <ion-card-header>
+      <ion-card-title>{{ currentSong.title }}</ion-card-title>
+      <ion-card-subtitle>{{ currentSong.artist }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+
+      <ion-item lines="none">
+        <ion-label>
+          <p class="file-path">{{ currentSong.path }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-button expand="block" color="primary" (click)="togglePlay()">
+        <ion-icon slot="start" [name]="isPlaying ? 'pause' : 'play'"></ion-icon>
+        {{ isPlaying ? 'Pause' : 'Play' }}
+      </ion-button>
+
+      <ion-button expand="block" color="primary" (click)="addToPlaylist()">
+        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+        Add to Playlist
+      </ion-button>
+
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Playlist -->
+  <ion-list *ngIf="playlist.length > 0">
+    <ion-list-header color="primary">
+      <ion-label class="ion-text-uppercase">Scanned Songs</ion-label>
+    </ion-list-header>
+
+    <ion-item *ngFor="let song of playlist" (click)="playSong(song)">
+      <ion-thumbnail slot="start">
+        <img [src]="song.cover || 'assets/default-cover.jpg'" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ song.title }}</h2>
+        <p>{{ song.artist }}</p>
+      </ion-label>
+      <ion-button fill="clear" slot="end" (click)="playSong(song); $event.stopPropagation();" color="primary">
+        <ion-icon name="play" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

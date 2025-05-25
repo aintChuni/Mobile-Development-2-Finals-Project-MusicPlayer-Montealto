@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="close()" aria-label="Close player">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Now Playing</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="fullscreen-content">
+  <div class="fullscreen-container">
+    <img
+      *ngIf="song?.cover"
+      [src]="song.cover"
+      alt="Cover Art"
+      class="cover-art"
+      loading="lazy"
+    />
+
+    <h2 *ngIf="song?.title" class="song-title" title="{{ song.title }}">
+      {{ song.title }}
+    </h2>
+    <p *ngIf="song?.artist" class="song-artist" title="{{ song.artist }}">
+      {{ song.artist }}
+    </p>
+
+    <div class="time-indicators">
+      <span>{{ currentTime }}</span>
+      <span>{{ durationTime }}</span>
+    </div>
+
+    <div class="progress-bar-container">
+      <ion-range
+        min="0"
+        max="100"
+        [value]="progress"
+        [disabled]="!isPlaying"
+        (ionChange)="seekTo($event)"
+        pin="true"
+        step="1"
+        color="primary"
+      >
+      </ion-range>
+    </div>
+
+    <ion-button class="play-button" (click)="togglePlayPause()" aria-label="Play/Pause">
+  <ion-icon [name]="isPlaying ? 'pause' : 'play'"></ion-icon>
+</ion-button>
+  </div>
+</ion-content>

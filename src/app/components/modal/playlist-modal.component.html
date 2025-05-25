@@ -1,0 +1,127 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Select Playlist</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="close()" fill="clear" color="light">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="select-playlist-content">
+  <ion-list>
+    <ion-item
+      *ngFor="let playlist of playlists"
+      (click)="togglePlaylistSelection(playlist)"
+      [class.selected]="selectedPlaylist?.name === playlist.name"
+      button
+      lines="full"
+    >
+      <ion-label>{{ playlist.name }}</ion-label>
+      <ion-icon
+        *ngIf="selectedPlaylist?.name === playlist.name"
+        name="checkmark-circle"
+        slot="end"
+      ></ion-icon>
+    </ion-item>
+  </ion-list>
+
+  <ion-button
+    expand="full"
+    (click)="save()"
+    [disabled]="!selectedPlaylist"
+    color="primary"
+    class="save-btn"
+  >
+    Save
+  </ion-button>
+</ion-content>
+
+<style>
+  ion-header, ion-toolbar {
+  padding-top: env(safe-area-inset-top);
+  --padding-top: env(safe-area-inset-top);
+  z-index: 10;
+}
+
+ion-content {
+  padding-top: env(safe-area-inset-top);
+}
+  :host {
+    --ion-background-color: var(--ion-background-color);
+    --ion-text-color: var(--ion-text-color);
+    display: block;
+  }
+
+  .select-playlist-content {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 12px;
+    --padding-bottom: 20px;
+    background: var(--ion-background-color);
+    color: var(--ion-text-color);
+  }
+
+  ion-list {
+    border-radius: 12px;
+    background: var(--ion-item-background);
+    box-shadow: 0 2px 8px rgba(32, 52, 179, 0.1);
+    margin-bottom: 1.5rem;
+  }
+
+  ion-item {
+    --background: var(--ion-item-background);
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--ion-text-color);
+    transition: background-color 0.25s ease;
+  }
+
+  body.dark ion-list {
+    background: var(--ion-item-background, #1f1f1f);
+  }
+
+  ion-item.selected {
+    background-color: var(--ion-color-primary);
+    color: var(--ion-color-primary-contrast);
+    --ion-color-base: var(--ion-color-primary-contrast);
+  }
+
+  ion-item.selected ion-label,
+  ion-item.selected ion-icon {
+    color: var(--ion-color-primary-contrast);
+  }
+
+  ion-item:hover:not(.selected) {
+    background-color: var(--ion-color-primary-tint);
+  }
+
+  ion-icon {
+    font-size: 1.3rem;
+  }
+
+  .saving-label {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--ion-color-primary);
+    margin-bottom: 1rem;
+  }
+
+  .save-btn {
+    font-weight: 600;
+    font-size: 1.1rem;
+    --background: var(--ion-color-primary);
+    --color: var(--ion-color-primary-contrast);
+    --border-radius: 8px;
+  }
+
+  ion-toolbar {
+    --background: var(--ion-color-primary);
+    --color: var(--ion-color-primary-contrast);
+    font-weight: 600;
+  }
+
+  ion-button[fill="clear"] {
+    --color: var(--ion-color-step-200, #e0e0e0);
+    --color-hover: var(--ion-color-step-100, #ffffff);
+  }
+</style>

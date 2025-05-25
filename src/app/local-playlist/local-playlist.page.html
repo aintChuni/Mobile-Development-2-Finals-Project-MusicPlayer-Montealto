@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>My Playlist</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="clearPlaylist()">Clear Playlist</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let song of playlist; let i = index" (click)="playOrPause(song)">
+      <ion-thumbnail slot="start">
+        <img [src]="song.cover || 'assets/default-cover.jpg'" />
+      </ion-thumbnail>
+      <ion-label>
+        <h2>{{ song.title }}</h2>
+        <p>{{ song.artist }}</p>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button fill="clear" color="primary">
+          <ion-icon
+            [name]="currentlyPlaying?.url === song.url && isPlaying ? 'pause' : 'play'">
+          </ion-icon>
+        </ion-button>
+        <ion-button color="danger" (click)="removeFromPlaylist(i); $event.stopPropagation()">
+          Remove
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing...">
+    </ion-refresher-content>
+  </ion-refresher>
+</ion-content>

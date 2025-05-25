@@ -1,0 +1,9 @@
+ion-header, ion-toolbar {
+  padding-top: env(safe-area-inset-top);
+  --padding-top: env(safe-area-inset-top);
+  z-index: 10;
+}
+
+ion-content {
+  padding-top: env(safe-area-inset-top);
+}

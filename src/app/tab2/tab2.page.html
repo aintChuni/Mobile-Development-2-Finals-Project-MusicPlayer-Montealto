@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Your Playlists</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-button
+    class="local-playlist-btn"
+    [routerLink]="['/tabs/tab2/local-playlist']"
+    expand="block"
+    shape="round"
+    color="primary"
+    fill="solid"
+  >
+    <ion-icon slot="start" name="folder-open"></ion-icon>
+    Go to Local Playlist
+  </ion-button>
+
+  <ion-button size="small" (click)="createPlaylistPrompt()" color="primary" fill="outline" class="ion-margin-bottom simple-create-btn">
+    + Create New Playlist
+  </ion-button>
+
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      refreshingSpinner="circles"
+      pullingText="Pull to refresh"
+      refreshingText="Refreshing..."
+    >
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list *ngIf="playlists && playlists.length > 0; else noPlaylists">
+    <ng-container *ngFor="let playlist of playlists">
+      <ion-card class="playlist-card">
+        <ion-item lines="none" button (click)="togglePlaylistExpanded(playlist)">
+          <ion-thumbnail slot="start" class="playlist-thumb">
+            <img *ngIf="playlist.images?.length" [src]="playlist.images[0].url" alt="{{playlist.name}}" />
+            <ion-icon *ngIf="!playlist.images?.length" name="musical-notes-outline" class="default-icon"></ion-icon>
+          </ion-thumbnail>
+          <ion-label>
+            <h2 class="playlist-title">{{ playlist.name }}</h2>
+            <p class="playlist-desc">{{ playlist.description || 'No description' }}</p>
+          </ion-label>
+          <ion-button
+            fill="clear"
+            color="danger"
+            size="small"
+            slot="end"
+            (click)="deletePlaylistAndStop($event, playlist.id)"
+            aria-label="Delete playlist"
+          >
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <ion-list *ngIf="playlist.expanded && playlist.tracksData?.length" lines="full" class="tracks-list">
+          <ion-item *ngFor="let track of playlist.tracksData" (click)="playTrack(track)">
+          <ion-label>
+            <strong>{{ track.name }}</strong>
+            <p class="ion-text-wrap ion-text-muted">{{ track.artists[0].name }}</p>
+          </ion-label>
+
+  <ion-button
+    fill="clear"
+    color="primary"
+    size="small"
+    (click)="playTrack(track); $event.stopPropagation()"
+    *ngIf="currentlyPlayingTrack?.url !== track.uri || !isPlaying"
+  >
+    <ion-icon name="play-outline"></ion-icon>
+  </ion-button>
+
+  <ion-button
+    fill="clear"
+    color="danger"
+    size="small"
+    (click)="pausePlayback(); $event.stopPropagation()"
+    *ngIf="currentlyPlayingTrack?.url === track.uri && isPlaying"
+  >
+    <ion-icon name="pause-outline"></ion-icon>
+  </ion-button>
+
+  <ion-button
+    fill="clear"
+    color="medium"
+    size="small"
+    (click)="removeTrack($event, playlist, track)"
+    aria-label="Remove track"
+  >
+    <ion-icon name="trash-outline"></ion-icon>
+  </ion-button>
+</ion-item>
+        </ion-list>
+      </ion-card>
+    </ng-container>
+  </ion-list>
+
+  <ng-template #noPlaylists>
+    <ion-text color="medium">
+      <p class="ion-text-center ion-padding">No playlists found.</p>
+    </ion-text>
+  </ng-template>
+</ion-content>

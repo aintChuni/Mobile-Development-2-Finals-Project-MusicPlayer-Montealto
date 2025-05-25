@@ -1,0 +1,112 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles"
+      refreshingText="Refreshing..."
+    ></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-searchbar
+    [(ngModel)]="searchQuery"
+    (ionInput)="onSearchChanged()"
+    debounce="500"
+    placeholder="Search for songs..."
+    animated
+    showClearButton="focus"
+    color="primary"
+  ></ion-searchbar>
+
+  <ion-button class="local-player-btn" expand="block" shape="round" fill="solid" color="primary" (click)="openLocalPlayer()">
+  <ion-icon name="musical-notes" slot="start"></ion-icon>
+  Open Local Player
+</ion-button>
+
+  <ion-grid *ngIf="songs.length > 0" class="song-grid">
+    <ion-row>
+      <ion-col size="6" size-md="4" size-lg="3" *ngFor="let song of songs">
+        <ion-card class="song-card" (click)="openFullScreen(song)">
+          <div class="cover-wrapper">
+            <img [src]="song.cover" alt="Album Art" />
+            <ion-button
+              fill="clear"
+              class="play-btn"
+              (click)="toggleSong(song); $event.stopPropagation()"
+              [disabled]="song.url === 'No preview available'"
+              title="{{ song.url === 'No preview available' ? 'No preview available' : (isCurrentSong(song) ? 'Pause' : 'Play') }}"
+            >
+              <ion-icon [name]="isCurrentSong(song) && isPlaying ? 'pause-circle' : 'play-circle'"></ion-icon>
+            </ion-button>
+          </div>
+
+          <ion-card-header>
+            <ion-card-title class="song-title" title="{{ song.title }}">{{ song.title }}</ion-card-title>
+            <ion-card-subtitle class="song-artist" title="{{ song.artist }}">{{ song.artist }}</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-button
+              fill="clear"
+              size="small"
+              (click)="openPlaylistSelect(song); $event.stopPropagation()"
+              title="Add to Playlist"
+            >
+              <ion-icon name="add-circle-outline"></ion-icon>
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-row *ngIf="songs.length === 0">
+    <ion-col size="12">
+      <ion-text color="medium">
+        <p class="no-songs-text">
+          No songs found or Spotify token expired.
+        </p>
+      </ion-text>
+    </ion-col>
+  </ion-row>
+</ion-content>
+
+<ion-footer *ngIf="currentSong">
+  <ion-toolbar class="mini-player" color="light">
+    <ion-item lines="none">
+      <ion-avatar slot="start" class="mini-avatar">
+        <img [src]="currentSong.cover" alt="Album Art" />
+      </ion-avatar>
+
+      <ion-label>
+        <h2 class="mini-title" title="{{ currentSong.title }}">{{ currentSong.title }}</h2>
+        <p class="mini-artist" title="{{ currentSong.artist }}">{{ currentSong.artist }}</p>
+        <ion-range
+          class="mini-range"
+          [value]="progress"
+          (ionChange)="seekTo($event)"
+          min="0"
+          max="100"
+          step="1"
+          pin="true"
+        ></ion-range>
+      </ion-label>
+
+      <ion-button
+        fill="clear"
+        size="small"
+        (click)="togglePlayPause()"
+        class="play-btn"
+        aria-label="Play/Pause"
+      >
+        <ion-icon [name]="isPlaying ? 'pause-circle' : 'play-circle'" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>

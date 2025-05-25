@@ -18,6 +18,7 @@ This Ionic + Capacitor app allows users to play music from local storage or stre
 - Display extracted metadata such as song title, artist, and cover art (if available)
 - Add songs to local playlists with offline persistence
 
+
 ### 🌐 Online Music Streaming
 - Integrates with Spotify Web API to fetch and stream music
 - Displays album artwork and metadata from the Spotify service
@@ -25,14 +26,17 @@ This Ionic + Capacitor app allows users to play music from local storage or stre
 - Playlist and playback state management
 - Ability to play/pause songs directly in playlist view
 
+
 ### 💾 Persistent Storage
 - Local playlists stored using Ionic Storage
 - Automatically loads saved data on app startup
+
 
 ### 🎨 UI & UX
 - Custom-designed splash screen and app icon
 - Responsive layout optimized for Android devices
 - Supports play/pause buttons, song highlight, and seek (where available)
+
 
 ## 📂 Project Structure (Key Pages)
 

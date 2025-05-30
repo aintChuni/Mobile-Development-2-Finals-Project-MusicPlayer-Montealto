@@ -14,14 +14,13 @@
     ></ion-refresher-content>
   </ion-refresher>
 
-  <ion-searchbar
+  <ion-searchbar class="custom-searchbar"
     [(ngModel)]="searchQuery"
     (ionInput)="onSearchChanged()"
     debounce="500"
     placeholder="Search for songs..."
     animated
     showClearButton="focus"
-    color="primary"
   ></ion-searchbar>
 
   <ion-button class="local-player-btn" expand="block" shape="round" fill="solid" color="primary" (click)="openLocalPlayer()">

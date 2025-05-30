@@ -33,8 +33,6 @@ export class Tab1Page implements OnInit, OnDestroy {
 
   searchQuery: string = '';
   private progressInterval: any;
-
-  // Subscriptions for BehaviorSubjects
   private subscriptions: Subscription[] = [];
 
   constructor(

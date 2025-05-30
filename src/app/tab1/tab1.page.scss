@@ -120,6 +120,7 @@ ion-content {
 
 .song-title {
   font-weight: 600;
+  color: var(--ion-text-color);
   font-size: 1rem;
   white-space: nowrap;
   overflow: hidden;
@@ -138,6 +139,15 @@ ion-content {
   text-align: center;
   margin-top: 3rem;
   font-style: italic;
+}
+
+.custom-searchbar {
+ --background: rgba(255, 255, 255, 0.1);
+  --color: var(--ion-text-color);
+  --placeholder-color: var(--ion-text-color);
+  --icon-color: var(--ion-text-color);
+  --cancel-button-color: var(--ion-text-color);
+  --clear-icon-color: var(--ion-text-color);
 }
 
 .local-player-btn {
